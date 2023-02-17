@@ -14,7 +14,7 @@ const io = new Server(server, {
         //  origin: "http://localhost:3000",
         //  origin: "http://localhost:3001",
         // origin: "http://localhost:1234",
-        origin:  "https://script.google.com/macros/s/AKfycbyWRznD_qTIhOnT6qNJFfWU1XP5SzWT5v8fDsBRHj8/dev",
+        origin:  "https://n-g2y6lzhpbp3kuko4s2uwm42vxxdu6hd4ckcoova-0lu-script.googleusercontent.com",
         methods: ["GET","POST"],
      }
 })
