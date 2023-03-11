@@ -22,7 +22,6 @@ app.use(cors())
 const server = http.createServer(app)
 const bodyParserXml = require('body-parser-xml');
 const bodyParser = require('body-parser');
-const { create } = require('xmlbuilder2');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
