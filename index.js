@@ -99,7 +99,7 @@ const io = new Server(server, {
      cors: {
         //  origin: "http://localhost:3000",
         //  origin: "http://localhost:3001",
-        origin: ['http://localhost:1234', 'https://n-g2y6lzhpbp3kuko4s2uwm42vxxdu6hd4ckcoova-0lu-script.googleusercontent.com'],
+        origin: ['http://localhost:1234', '*'],
         // origin:  "https://n-g2y6lzhpbp3kuko4s2uwm42vxxdu6hd4ckcoova-0lu-script.googleusercontent.com",
         methods: ["GET","POST"],
      }
