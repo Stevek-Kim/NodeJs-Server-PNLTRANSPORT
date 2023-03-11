@@ -21,12 +21,80 @@ app.use(cors())
 
 const server = http.createServer(app)
 
+const bodyParserXml = require('body-parser-xml');
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors({
+    origin: ['http://localhost:1234', 'https://example.com'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }));
+
+app.use(express.json());
+const request = require('request');
+const fs = require('fs');
+const xml2js = require('xml2js');
+app.use(bodyParser.text({ type: 'application/xml' }));
+bodyParserXml(app);
+app.post('/getxmljob', async (req, res) => {
+  const parser = new xml2js.Parser({ explicitArray: false });
+
+// Define the URL for the web service endpoint
+const url = 'https://appsrv.directcouriers.com.au/online/getxmljob.cl';
+const xmlData = req.body;
+
+// Read the XML file from disk
+// const xmlFilePath = '/Users/stevekim/Desktop/jobxml.xml';
+// const xmlFile = fs.createReadStream(xmlFilePath);
+
+
+
+const requestOptions = {
+  url: url,
+  method: 'POST',
+  formData: {
+    jobxml: xmlData
+  }
+};
+
+// Send the request to the web service
+request(requestOptions, function(error, response, body) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(body);
+
+    request(body, function(error, response, body) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(body);
+
+        xml2js.parseString(body, (err, result) => {
+          if (err) {
+            console.error(err);
+          } else {
+            res.json(result)
+          }
+        });
+      }
+    });
+
+  }
+});
+
+});
+
+
+// >  socket io below
+
 const io = new Server(server, {
      cors: {
         //  origin: "http://localhost:3000",
         //  origin: "http://localhost:3001",
-        // origin: "http://localhost:1234",
-        origin:  "https://n-g2y6lzhpbp3kuko4s2uwm42vxxdu6hd4ckcoova-0lu-script.googleusercontent.com",
+        origin: "http://localhost:1234",
+        // origin:  "https://n-g2y6lzhpbp3kuko4s2uwm42vxxdu6hd4ckcoova-0lu-script.googleusercontent.com",
         methods: ["GET","POST"],
      }
 })
@@ -321,5 +389,5 @@ const validityEmail =  await googleSheets.spreadsheets.values.get({
 
 
 server.listen(3001, (req,res)=>{
-     console.log("SERVER IS RUNNING")
+     console.log("SERVER IS RUNNING ON 3001")
 })
