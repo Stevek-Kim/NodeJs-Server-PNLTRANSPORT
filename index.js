@@ -20,29 +20,35 @@ const lock = new AsyncLock();
 app.use(cors())
 
 const server = http.createServer(app)
-
 const bodyParserXml = require('body-parser-xml');
-
 const bodyParser = require('body-parser');
+const { create } = require('xmlbuilder2');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({
     origin: ['http://localhost:1234', 'https://n-g2y6lzhpbp3kuko4s2uwm42vxxdu6hd4ckcoova-0lu-script.googleusercontent.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
   }));
-
 app.use(express.json());
 const request = require('request');
 const fs = require('fs');
 const xml2js = require('xml2js');
+
 app.use(bodyParser.text({ type: 'application/xml' }));
 bodyParserXml(app);
-app.post('/getxmljob', async (req, res) => {
-  const parser = new xml2js.Parser({ explicitArray: false });
 
+const { js2xml } = require('xml-js');
+
+app.post('/getxmljob',  (req, res) => {
+
+  
 // Define the URL for the web service endpoint
 const url = 'https://appsrv.directcouriers.com.au/online/getxmljob.cl';
-const xmlData = req.body;
+
+// const xmlData = await create(req.body).end({ prettyPrint: true });
+const xmlString = js2xml(JSON.parse(req.body), { compact: true, spaces: 4 });
+console.log(xmlString);
 
 // Read the XML file from disk
 // const xmlFilePath = '/Users/stevekim/Desktop/jobxml.xml';
@@ -50,15 +56,15 @@ const xmlData = req.body;
 
 
 
+
 const requestOptions = {
   url: url,
   method: 'POST',
   formData: {
-    jobxml: xmlData
+    jobxml: xmlString
   }
 };
 
-// Send the request to the web service
 request(requestOptions, function(error, response, body) {
   if (error) {
     console.error(error);
