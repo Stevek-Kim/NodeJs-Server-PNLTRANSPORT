@@ -27,7 +27,7 @@ const { create } = require('xmlbuilder2');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({
-    origin: ['http://localhost:1234', 'https://n-mqnu4zpcgltidjxc3b7qreuoegwptdkt2q23sbi-0lu-script.googleusercontent.com'],
+    origin: ['http://localhost:1234','*'],
     methods: ['GET', 'POST', 'PUT', 'DELETE']
   }));
 app.use(express.json());
